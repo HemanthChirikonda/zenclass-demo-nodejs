@@ -6,7 +6,7 @@ const mongodbClint= mongodb.MongoClient;
 const cors= require('cors');
 const url = 'mongodb+srv://hemanth:OHoCYn9ztyvAKrdH@cluster0.v7ugo.mongodb.net?retryWrites=true&w=majority';
 app.use(cors({
-    origin:'https://relaxed-swanson-d0f3d4.netlify.app/'
+    origin:'https://relaxed-swanson-d0f3d4.netlify.app'
 }))
 app.use(bodyParser.json());
 const port= 3030;
