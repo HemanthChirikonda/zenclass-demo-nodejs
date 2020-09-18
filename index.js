@@ -47,13 +47,13 @@ app.post('/student', async(req,res)=>{
        //let data= await req.body.json();
        let student= await db.collection('students').insertOne({name: req.body.name});
         client.close();
-        console.log(student)
+        //console.log(student)
         res.json({
             "message":"student created",
             "id":student.insertedId
            })
        } catch (error) {
-           console.log(error);
+          // console.log(error);
          res.json({
              "message":error
          })  
@@ -114,34 +114,34 @@ app.get("/mentors", async (req,res)=>{
          console.log(req.body.mentor._id)
         let student= await db.collection('students').updateOne({_id:req.body.student._id},{$set:{"mentorId":mongodb.ObjectId(req.body.mentor._id)}})
          client.close();
-         console.log(student)
+         //console.log(student)
          res.json({
              "message":"Mentor assigned",
              "id":student.insertedId
             })
         } catch (error) {
-            console.log(error);
+          //  console.log(error);
           res.json({
               "message":error
           })  
         }
  })
 
- app.post('/assginmentor', async(req,res)=>{
+ app.post('/assignmentor', async(req,res)=>{
     try {
      let client = await mongodbClint.connect(url);
      let db= client.db('zenclassDemo');
      console.log(req.body.student._id);
      console.log(req.body.mentor._id)
-    let student= await db.collection('students').updateOne({ $match:{_id:req.body.student._id}},{$addFields:{"mentorId":req.body.mentor._id}})
+    let student= await db.collection('students').findOneAndUpdate({_id:mongodb.ObjectId(req.body.student._id)},{$set:{"mentorId":mongodb.ObjectId(req.body.mentor._id)}})
      client.close();
-     console.log(student)
+     //console.log(student)
      res.json({
          "message":"Mentor assigned",
-         "id":student.insertedId
+         "id":student._Id
         })
     } catch (error) {
-        console.log(error);
+       // console.log(error);
       res.json({
           "message":error
       })  
