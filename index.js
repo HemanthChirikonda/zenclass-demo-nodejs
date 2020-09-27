@@ -6,7 +6,7 @@ const mongodbClint= mongodb.MongoClient;
 const cors= require('cors');
 const url = 'mongodb+srv://hemanth:OHoCYn9ztyvAKrdH@cluster0.v7ugo.mongodb.net?retryWrites=true&w=majority';
 app.use(cors({
-    origin:'https://relaxed-swanson-d0f3d4.netlify.app'
+    origin:'*'
 }))
 app.use(bodyParser.json());
 const port= 3030;
@@ -126,6 +126,49 @@ app.get("/mentors", async (req,res)=>{
           })  
         }
  })
+ app.post('/updatestudent', async(req,res)=>{
+    try {
+     let client = await mongodbClint.connect(url);
+     let db= client.db('zenclassDemo');
+     console.log(req.body.student_id);
+     console.log(req.body.name)
+    let student= await db.collection('students',{ useUnifiedTopology: true }).findOneAndUpdate({_id: mongodb.ObjectId(req.body.student_id)},{$set:{name:req.body.name}})
+     client.close();
+     console.log(student)
+     res.json({
+         "message":"updated",
+         "id":req.body.student_id
+        })
+    } catch (error) {
+      //  console.log(error);
+      res.json({
+          "message":error
+      })  
+    }
+});
+
+
+app.post('/removestudent', async(req,res)=>{
+    try {
+     let client = await mongodbClint.connect(url);
+     let db= client.db('zenclassDemo');
+     console.log(req.body.student_id);
+     
+    let student= await db.collection('students',{ useUnifiedTopology: true }).deleteOne({_id: mongodb.ObjectId(req.body.student_id)});
+     client.close();
+     console.log(student)
+     res.json({
+         "message":"deleted",
+         "id":req.body.student_id
+        })
+    } catch (error) {
+      //  console.log(error);
+      res.json({
+          "message":error
+      })  
+    }
+})
+
 
  app.post('/assignmentor', async(req,res)=>{
     try {
