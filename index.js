@@ -174,8 +174,8 @@ app.post('/removestudent', async(req,res)=>{
     try {
      let client = await mongodbClint.connect(url);
      let db= client.db('zenclassDemo');
-     console.log(req.body.student._id);
-     console.log(req.body.mentor._id)
+     //console.log(req.body.student._id);
+     //console.log(req.body.mentor._id)
     let student= await db.collection('students').findOneAndUpdate({_id:mongodb.ObjectId(req.body.student._id)},{$set:{"mentorId":mongodb.ObjectId(req.body.mentor._id)}});
     let mentor= await db.collection('mentors').findOneAndUpdate({_id:mongodb.ObjectId(req.body.mentor._id)},{$push:{"students":mongodb.ObjectId(req.body.student._id)}})
      client.close();
@@ -191,7 +191,27 @@ app.post('/removestudent', async(req,res)=>{
           "message":error
       })  
     }
+});
+
+
+app.post('/createuser',async(req,res)=>{
+    try {
+        let client = await mongodbClint.connect(url);
+        let db= client.db('userInterFace');
+        let user= db.collections('users').insertOne(req.body);
+        client.close();
+        res.json({
+            "message":"user created",
+            "userID":user.insertedId
+        })
+    } catch (error) {
+        res.json({
+            "message":error
+        }) 
+    }
 })
+
+
 app.listen(process.env.PORT||port, () => {
     console.log('server started')
   })
