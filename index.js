@@ -198,7 +198,7 @@ app.post('/createuser',async(req,res)=>{
     try {
         let client = await mongodbClint.connect(url);
         let db= client.db('userInterFace');
-        let user= db.collections('users').insertOne(req.body);
+        let user= await db.collections('users').insertOne(req.body);
         client.close();
         res.json({
             "message":"user created",
@@ -215,7 +215,7 @@ app.get("/users",async(re,res)=>{
     try {
         let client = await mongodbClint.connect(url);
         let db= client.db('userInterFace');
-        let user= (await db.collections('users')).find()
+        let user= await (db.collections('users')).find();
         client.close();
         res.json(user);
     } catch (error) {
