@@ -209,8 +209,36 @@ app.post('/createuser',async(req,res)=>{
             "message":error
         }) 
     }
+});
+
+app.get("/users",async(re,res)=>{
+    try {
+        let client = await mongodbClint.connect(url);
+        let db= client.db('userInterFace');
+        let user= (await db.collections('users')).find()
+        client.close();
+        res.json(user);
+    } catch (error) {
+        res.json({"Message":error});
+    }
 })
 
+// app.post('/user',async(req,res)=>{
+//     try {
+//         let client = await mongodbClint.connect(url);
+//         let db= client.db('userInterFace');
+//         let user= db.collections('users').findOneAndUpdate({_id:mongodb.ObjectId(id)},{$set})
+//         client.close();
+//         res.json({
+//             "message":"user created",
+//             "userID":user.insertedId
+//         })
+//     } catch (error) {
+//         res.json({
+//             "message":error
+//         }) 
+//     }
+// })
 
 app.listen(process.env.PORT||port, () => {
     console.log('server started')
