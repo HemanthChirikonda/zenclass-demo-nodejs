@@ -211,7 +211,7 @@ app.post('/createuser',async(req,res)=>{
     }
 });
 
-app.get("/users",async(re,res)=>{
+app.get("/users",async(req,res)=>{
     try {
         let client = await mongodbClint.connect(url);
         let db= client.db('userInterFace');
