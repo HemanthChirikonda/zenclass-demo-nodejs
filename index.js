@@ -271,7 +271,7 @@ app.get('/users/:id',async(req,res)=>{
         let db= client.db('userInterFace');
         //console.log("create")
         console.log(req.params.id)
-        let user= await db.collection('users').findOne({_id: mongodb.ObjectId(req.params.id)}).toArray();
+        let user= await db.collection('users').findOne({_id: req.params.id}).toArray();
         client.close();
         //console.log(user)
         res.json(user)
