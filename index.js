@@ -198,8 +198,10 @@ app.post('/createuser',async(req,res)=>{
     try {
         let client = await mongodbClint.connect(url);
         let db= client.db('userInterFace');
-        let user= await db.collections('users').insertOne(req.body);
+        console.log("create")
+        let user= await db.collection('users').insertOne(req.body);
         client.close();
+        console.log(user)
         res.json({
             "message":"user created",
             "userID":user.insertedId
@@ -215,13 +217,36 @@ app.get("/users",async(req,res)=>{
     try {
         let client = await mongodbClint.connect(url);
         let db= client.db('userInterFace');
-        let user= await db.collections('users').find().toArray();
+        //console.log("user");
+        let users = await db.collection('users').find().toArray();
         client.close();
-        res.json(user);
+        //console.log(users,"1");
+        res.json(users);
     } catch (error) {
         res.json({"Message":error});
     }
 })
+
+
+app.post('/deleteuser',async(req,res)=>{
+    try {
+        let client = await mongodbClint.connect(url);
+        let db= client.db('userInterFace');
+        //console.log("create")
+        let user= await db.collection('users').deleteOne({name:req.body.name});
+        client.close();
+        //console.log(user)
+        res.json({
+            "message":"user deleted",
+            "userID":req.body.name
+        })
+    } catch (error) {
+        res.json({
+            "message":error
+        }) 
+    }
+});
+
 
 // app.post('/user',async(req,res)=>{
 //     try {
