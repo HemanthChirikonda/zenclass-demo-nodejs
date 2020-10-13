@@ -233,7 +233,7 @@ app.post('/deleteuser',async(req,res)=>{
         let client = await mongodbClint.connect(url);
         let db= client.db('userInterFace');
         //console.log("create")
-        let user= await db.collection('users').deleteOne({name:req.body.name});
+        let user= await db.collection('users').deleteOne({_id: mongodb.ObjectId(req.body.id)});
         client.close();
         //console.log(user)
         res.json({
