@@ -265,16 +265,17 @@ app.post('/edit/:id',async(req,res)=>{
     }
 });
 
-app.get('/users/:id',async(req,res)=>{
+app.get('/user/:id',async(req,res)=>{
     try {
         let client = await mongodbClint.connect(url);
         let db= client.db('userInterFace');
         //console.log("create")
-        console.log(req.params.id)
-        let user= await db.collection('users').findOne({_id: req.params.id}).toArray();
+        console.log(mongodb.ObjectId(req.params.id));
+        let users = await db.collection('users').findOne({_id: mongodb.ObjectId(req.params.id)});
+        console.log(users);
         client.close();
         //console.log(user)
-        res.json(user)
+        res.json(users);
     } catch (error) {
         res.json({
             "message":error
