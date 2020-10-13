@@ -215,7 +215,7 @@ app.get("/users",async(req,res)=>{
     try {
         let client = await mongodbClint.connect(url);
         let db= client.db('userInterFace');
-        let user= await (db.collections('users')).find().toArray();
+        let user= await db.collections('users').find().toArray();
         client.close();
         res.json(user);
     } catch (error) {
